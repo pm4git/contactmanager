@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function Contact({name, email, phone}) {
+function Contact({contact}) {
 
+    const {name,email,phone} = contact;
     return (
         <div className="card card-body mb-3">
             <h4 style={{color: 'red'}}>{name}</h4>
@@ -15,9 +16,7 @@ function Contact({name, email, phone}) {
 }
 
 Contact.propTypes = {
-    name: PropTypes.string.isRequired,
-    email: PropTypes.string.isRequired,
-    phone: PropTypes.string.isRequired
+    contact: PropTypes.object.isRequired,
 };
 
 export default Contact;
