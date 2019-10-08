@@ -1,7 +1,7 @@
 import React from 'react';
-import Contact from "./Components/Contact";
 import Header from "./Components/Header";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Contacts from "./Components/Contacts";
 
 function App() {
 
@@ -9,8 +9,7 @@ function App() {
         <div className="App">
             <Header branding="Contact Manager"/>
             <div className="container">
-                <Contact name={"John Doe"} email={"johndoe@gmail.com"} phone={"555-555-555"}/>
-                <Contact name={"Joanna Dark"} email={"jodark@gmail.com"} phone={"333-333-333"}/>
+                <Contacts/>
             </div>
         </div>
     );
