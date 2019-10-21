@@ -19,7 +19,7 @@ const Header = (props) => {
             </div>
         </nav>
     );
-}
+};
 Header.defaultProps = {
     branding: "My App"
 };
