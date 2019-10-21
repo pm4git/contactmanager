@@ -8,6 +8,13 @@ const reducer = (state, action) => {
                 ...state,
                 contacts: state.contacts.filter(contact => contact.id !== action.payload)
             };
+        case "ADD_CONTACT": {
+            console.log(action.payload);
+            return {
+                ...state,
+                contacts: [action.payload, ...state.contacts]
+            }
+        }
         default:
             return state;
     }
@@ -41,7 +48,6 @@ export default class Provider extends Component {
                 phone: "333-123-434"
             }],
         dispatch: action => this.setState(state => reducer(state, action))
-
     };
 
     render() {
