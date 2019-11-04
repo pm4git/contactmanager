@@ -1,12 +1,14 @@
 import React, {Component} from 'react';
 import {Consumer} from "../../context";
 import uuid from "uuid";
+import TextInputGroup from "../layout/TextInputGroup";
 
 class AddContact extends Component {
     state = {
         name: "",
         email: "",
-        phone: ""
+        phone: "",
+        errors: ""
     };
 
     onChange = (e) => {
@@ -17,6 +19,20 @@ class AddContact extends Component {
 
         e.preventDefault();
         const {name, email, phone} = this.state;
+
+        if (name === "") {
+            this.setState({errors: {name: "Name is required"}});
+            return;
+        }
+        if (email === "") {
+            this.setState({errors: {email: "Email is required"}});
+            return;
+        }
+        if (phone === "") {
+            this.setState(
+                {errors: {phone: "Phone is required"}});
+            return;
+        }
         const newContact = {
             id: uuid(),
             name,
@@ -28,11 +44,11 @@ class AddContact extends Component {
     };
 
     clearState() {
-        this.setState({name: "", email: "", phone: ""})
+        this.setState({name: "", email: "", phone: "", errors: {}})
     }
 
     render() {
-        const {name, email, phone} = this.state;
+        const {name, email, phone, errors} = this.state;
         return (
             <Consumer>
                 {
@@ -45,22 +61,15 @@ class AddContact extends Component {
                                 </div>
                                 <div className="card-body">
                                     <form onSubmit={this.onSubmit.bind(this, dispatch)}>
-                                        <div className="form-group">
-                                            <label htmlFor="name">Name</label>
-                                            <input type="text" name="name" className="fom-control form-control"
-                                                   placeholder="Enter Name..." value={name} onChange={this.onChange}/>
-                                        </div>
-                                        <div className="form-group">
-                                            <label htmlFor="email">Email</label>
-                                            <input type="email" name="email" className="fom-control form-control"
-                                                   placeholder="Enter Email Address..." value={email}
-                                                   onChange={this.onChange}/>
-                                        </div>
-                                        <div className="form-group">
-                                            <label htmlFor="phone">Phone</label>
-                                            <input type="text" name="phone" className="fom-control form-control"
-                                                   placeholder="Enter Phone..." value={phone} onChange={this.onChange}/>
-                                        </div>
+                                        <TextInputGroup label="Name" name="name" value={name}
+                                                        placeHolder="Enter Name..." onChange={this.onChange}
+                                                        error={errors.name}/>
+                                        <TextInputGroup type="email" label="Email" name="email" value={email}
+                                                        placeHolder="Enter Email..." onChange={this.onChange}
+                                                        error={errors.email}/>
+                                        <TextInputGroup type="phone" label="Phone" name="phone" value={phone}
+                                                        placeHolder="Enter Phone..." onChange={this.onChange}
+                                                        error={errors.phone}/>
                                         <input type="submit" value="Add Contact"
                                                className="btn btn-outline-dark btn-block"/>
                                     </form>
