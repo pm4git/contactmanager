@@ -27,9 +27,9 @@ export default class Provider extends Component {
         dispatch: action => this.setState(state => reducer(state, action))
     };
 
-    componentDidMount() {
-        Axios.get('https://jsonplaceholder.typicode.com/users')
-            .then(response => this.setState({contacts: response.data}));
+    async componentDidMount() {
+        const res = await Axios.get('https://jsonplaceholder.typicode.com/users');
+        this.setState({contacts: res.data});
     };
 
     render() {
