@@ -12,7 +12,7 @@ import EditContact from "./Components/contacts/EditContact";
 function App() {
 
     return (
-        <Router>
+        <Router basename={process.env.PUBLIC_URL}>
             <Provider>
                 <div className="App">
                     <Header branding="Contact Manager"/>
