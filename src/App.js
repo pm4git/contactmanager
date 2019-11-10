@@ -7,6 +7,7 @@ import AddContact from "./Components/contacts/AddContact";
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import About from "./Components/pages/About";
 import NotFound from "./Components/pages/NotFound";
+import EditContact from "./Components/contacts/EditContact";
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
                         <Switch>
                             <Route exact path="/" component={Contacts}/>
                             <Route exact path="/contact/add" component={AddContact}/>
+                            <Route exact path="/contact/edit/:id" component={EditContact}/>
                             <Route exact path="/about" component={About}/>
                             <Route component={NotFound}/>
                         </Switch>
