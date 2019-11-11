@@ -2,18 +2,19 @@ import React from 'react';
 import Header from "./Components/layout/Header";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Contacts from "./Components/contacts/Contacts";
-import Provider from "./context";
 import AddContact from "./Components/contacts/AddContact";
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import About from "./Components/pages/About";
 import NotFound from "./Components/pages/NotFound";
 import EditContact from "./Components/contacts/EditContact";
+import store from "./Components/store/store";
+import {Provider} from "react-redux";
 
 function App() {
 
     return (
-        <Router basename={process.env.PUBLIC_URL}>
-            <Provider>
+        <Provider store={store}>
+            <Router basename={process.env.PUBLIC_URL}>
                 <div className="App">
                     <Header branding="Contact Manager"/>
                     <div className="container">
@@ -26,8 +27,8 @@ function App() {
                         </Switch>
                     </div>
                 </div>
-            </Provider>
-        </Router>
+            </Router>
+        </Provider>
     );
 }
 

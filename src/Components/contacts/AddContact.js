@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {Consumer} from "../../context";
 import TextInputGroup from "../layout/TextInputGroup";
 import Axios from "axios";
 
@@ -15,7 +14,7 @@ class AddContact extends Component {
         this.setState({[e.target.name]: e.target.value})
     };
 
-    onSubmit = async (dispatch, e) => {
+    onSubmit = async (e) => {
 
         e.preventDefault();
         const {name, email, phone} = this.state;
@@ -38,8 +37,7 @@ class AddContact extends Component {
             email,
             phone
         };
-        const res = await Axios.post('https://jsonplaceholder.typicode.com/posts', newContact);
-        dispatch({type: "ADD_CONTACT", payload: res.data});
+        await Axios.post('https://jsonplaceholder.typicode.com/posts', newContact);
         this.clearState();
         this.props.history.push("/");
     };
@@ -51,36 +49,27 @@ class AddContact extends Component {
     render() {
         const {name, email, phone, errors} = this.state;
         return (
-            <Consumer>
-                {
-                    value => {
-                        const {dispatch} = value;
-                        return (
-                            <div className="card mb-3">
-                                <div className="card-header">
-                                    Add Contact
-                                </div>
-                                <div className="card-body">
-                                    <form onSubmit={this.onSubmit.bind(this, dispatch)}>
-                                        <TextInputGroup label="Name" name="name" value={name}
-                                                        placeHolder="Enter Name..." onChange={this.onChange}
-                                                        error={errors.name}/>
-                                        <TextInputGroup type="email" label="Email" name="email" value={email}
-                                                        placeHolder="Enter Email..." onChange={this.onChange}
-                                                        error={errors.email}/>
-                                        <TextInputGroup type="phone" label="Phone" name="phone" value={phone}
-                                                        placeHolder="Enter Phone..." onChange={this.onChange}
-                                                        error={errors.phone}/>
-                                        <input type="submit" value="Add Contact"
-                                               className="btn btn-outline-dark btn-block"/>
-                                    </form>
-                                </div>
-                            </div>
-                        )
-                    }
-                }
-            </Consumer>
-        );
+            <div className="card mb-3">
+                <div className="card-header">
+                    Add Contact
+                </div>
+                <div className="card-body">
+                    <form onSubmit={this.onSubmit.bind(this)}>
+                        <TextInputGroup label="Name" name="name" value={name}
+                                        placeHolder="Enter Name..." onChange={this.onChange}
+                                        error={errors.name}/>
+                        <TextInputGroup type="email" label="Email" name="email" value={email}
+                                        placeHolder="Enter Email..." onChange={this.onChange}
+                                        error={errors.email}/>
+                        <TextInputGroup type="phone" label="Phone" name="phone" value={phone}
+                                        placeHolder="Enter Phone..." onChange={this.onChange}
+                                        error={errors.phone}/>
+                        <input type="submit" value="Add Contact"
+                               className="btn btn-outline-dark btn-block"/>
+                    </form>
+                </div>
+            </div>
+        )
     }
 }
 

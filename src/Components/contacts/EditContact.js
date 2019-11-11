@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {Consumer} from "../../context";
 import TextInputGroup from "../layout/TextInputGroup";
 import Axios from "axios";
 
@@ -34,7 +33,7 @@ class EditContact extends Component {
         this.setState({[e.target.name]: e.target.value})
     };
 
-    onSubmit = async (dispatch, e) => {
+    onSubmit = async (e) => {
 
         e.preventDefault();
         const {id, name, email, phone} = this.state;
@@ -53,8 +52,7 @@ class EditContact extends Component {
             return;
         }
         try {
-            const res = await Axios.put(`https://jsonplaceholder.typicode.com/users/${id}`, {id, name, email, phone});
-            dispatch({type: 'EDIT_CONTACT', payload: res.data});
+            await Axios.put(`https://jsonplaceholder.typicode.com/users/${id}`, {id, name, email, phone});
         } catch (e) {
             this.setState({errors: {general: e.message}});
             return;
@@ -72,36 +70,27 @@ class EditContact extends Component {
 
         const {name, email, phone, errors} = this.state;
         return (
-            <Consumer>
-                {
-                    value => {
-                        const {dispatch} = value;
-                        return (
-                            <div className="card mb-3">
-                                <div className="card-header">
-                                    Edit Contact
-                                </div>
-                                <div className="card-body">
-                                    <form onSubmit={this.onSubmit.bind(this, dispatch)}>
-                                        <TextInputGroup label="Name" name="name" value={name}
-                                                        placeHolder="Enter Name..." onChange={this.onChange}
-                                                        error={errors.name}/>
-                                        <TextInputGroup type="email" label="Email" name="email" value={email}
-                                                        placeHolder="Enter Email..." onChange={this.onChange}
-                                                        error={errors.email}/>
-                                        <TextInputGroup type="phone" label="Phone" name="phone" value={phone}
-                                                        placeHolder="Enter Phone..." onChange={this.onChange}
-                                                        error={errors.phone}/>
-                                        <input type="submit" value="Update Contact"
-                                               className="btn btn-outline-dark btn-block"/>
-                                    </form>
-                                </div>
-                                {errors.general && <div className="alert alert-danger mt-3">{errors.general}</div>}
-                            </div>
-                        )
-                    }
-                }
-            </Consumer>
+            <div className="card mb-3">
+                <div className="card-header">
+                    Edit Contact
+                </div>
+                <div className="card-body">
+                    <form onSubmit={this.onSubmit.bind(this)}>
+                        <TextInputGroup label="Name" name="name" value={name}
+                                        placeHolder="Enter Name..." onChange={this.onChange}
+                                        error={errors.name}/>
+                        <TextInputGroup type="email" label="Email" name="email" value={email}
+                                        placeHolder="Enter Email..." onChange={this.onChange}
+                                        error={errors.email}/>
+                        <TextInputGroup type="phone" label="Phone" name="phone" value={phone}
+                                        placeHolder="Enter Phone..." onChange={this.onChange}
+                                        error={errors.phone}/>
+                        <input type="submit" value="Update Contact"
+                               className="btn btn-outline-dark btn-block"/>
+                    </form>
+                </div>
+                {errors.general && <div className="alert alert-danger mt-3">{errors.general}</div>}
+            </div>
         );
     }
 }
