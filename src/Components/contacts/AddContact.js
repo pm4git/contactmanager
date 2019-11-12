@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import TextInputGroup from "../layout/TextInputGroup";
-import Axios from "axios";
+import {addContact} from "../../actions/contactActions";
+import {connect} from "react-redux";
+import PropTypes from 'prop-types'
 
 class AddContact extends Component {
     state = {
@@ -37,7 +39,8 @@ class AddContact extends Component {
             email,
             phone
         };
-        await Axios.post('https://jsonplaceholder.typicode.com/posts', newContact);
+        this.props.addContact(newContact);
+        //await Axios.post('https://jsonplaceholder.typicode.com/posts', newContact);
         this.clearState();
         this.props.history.push("/");
     };
@@ -73,4 +76,8 @@ class AddContact extends Component {
     }
 }
 
-export default AddContact;
+AddContact.propTypes = {
+    addContact: PropTypes.func.isRequired
+};
+
+export default connect(null, {addContact})(AddContact);

@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import Axios from "axios";
 import {Link} from "react-router-dom";
+import {deleteContact} from "../../actions/contactActions";
+import {connect} from "react-redux";
 
 class Contact extends Component {
     state = {showContactInfo: false};
@@ -12,7 +13,8 @@ class Contact extends Component {
         const handleShowInfoClick = () => this.setState({showContactInfo: !this.state.showContactInfo});
 
         const handleDeleteClick = async (id) => {
-            await Axios.delete(`https://jsonplaceholder.typicode.com/users/${id}`);
+            this.props.deleteContact(id)
+            //await Axios.delete(`https://jsonplaceholder.typicode.com/users/${id}`);
         };
 
         return (
@@ -46,6 +48,7 @@ class Contact extends Component {
 
 Contact.propTypes = {
     contact: PropTypes.object.isRequired,
+    deleteContact: PropTypes.func.isRequired
 };
 
-export default Contact;
+export default connect(null, {deleteContact})(Contact);

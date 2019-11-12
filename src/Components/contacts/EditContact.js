@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import TextInputGroup from "../layout/TextInputGroup";
-import Axios from "axios";
+import PropTypes from 'prop-types'
+import {connect} from 'react-redux';
+import {updateContact} from '../../actions/contactActions'
 
 
 class EditContact extends Component {
@@ -14,19 +16,30 @@ class EditContact extends Component {
 
     async componentDidMount() {
         const {id} = this.props.match.params;
-        try {
-            const res = await Axios.get(`https://jsonplaceholder.typicode.com/users/${id}`);
-            const contact = res.data;
-            this.setState(
-                {
-                    id: contact.id,
-                    name: contact.name,
-                    email: contact.email,
-                    phone: contact.phone
-                });
-        } catch (e) {
+        const contact = this.props.contacts.filter((c) => c.id === id).pop();
+        this.setState(
+            {
+                id: contact.id,
+                name: contact.name,
+                email: contact.email,
+                phone: contact.phone
+            });
 
-        }
+        /*
+                try {
+                    const res = await Axios.get(`https://jsonplaceholder.typicode.com/users/${id}`);
+                    const contact = res.data;
+                    this.setState(
+                        {
+                            id: contact.id,
+                            name: contact.name,
+                            email: contact.email,
+                            phone: contact.phone
+                        });
+                } catch (e) {
+
+                }
+        */
     }
 
     onChange = (e) => {
@@ -51,12 +64,15 @@ class EditContact extends Component {
                 {errors: {phone: "Phone is required"}});
             return;
         }
-        try {
+
+        this.props.updateContact({id, name, email, phone});
+
+        /*try {
             await Axios.put(`https://jsonplaceholder.typicode.com/users/${id}`, {id, name, email, phone});
         } catch (e) {
             this.setState({errors: {general: e.message}});
             return;
-        }
+        }*/
 
         this.clearState();
         this.props.history.push("/");
@@ -68,7 +84,8 @@ class EditContact extends Component {
 
     render() {
 
-        const {name, email, phone, errors} = this.state;
+        const contact = this.state;
+        const {name, email, phone, errors} = contact;
         return (
             <div className="card mb-3">
                 <div className="card-header">
@@ -95,4 +112,15 @@ class EditContact extends Component {
     }
 }
 
-export default EditContact;
+EditContact.propTypes = {
+    contacts: PropTypes.array.isRequired,
+    updateContact: PropTypes.func.isRequired
+};
+
+const mapStateToProps = (state) => (
+    {
+        contacts: state.contact.contacts
+    }
+);
+
+export default connect(mapStateToProps, {updateContact})(EditContact);
