@@ -14,7 +14,6 @@ class Contact extends Component {
 
         const handleDeleteClick = async (id) => {
             this.props.deleteContact(id)
-            //await Axios.delete(`https://jsonplaceholder.typicode.com/users/${id}`);
         };
 
         return (

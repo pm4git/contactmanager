@@ -1,23 +1,23 @@
-import {ADD_CONTACT, DELETE_CONTACT, GET_CONTACTS, UPDATE_CONTACT} from '../actions/types';
-import * as uuid from "uuid";
+import {ADD_CONTACT, DELETE_CONTACT, GET_CONTACT, GET_CONTACTS, UPDATE_CONTACT} from '../actions/types';
 
 const initialState = {
-    contacts: [
-        {
-            id: uuid(),
-            name: "John Wick",
-            email: "jw@gmail.com",
-            phone: "444-444-444"
-        }
-    ]
+    contacts: [],
+    contact: {}
 };
 
 export default function (state = initialState, action) {
     switch (action.type) {
         case GET_CONTACTS:
-            return {...state};
+            return {
+                ...state,
+                contacts: action.payload
+            };
+        case GET_CONTACT:
+            return {
+                ...state,
+                contact: action.payload
+            };
         case ADD_CONTACT: {
-            action.payload.id = uuid();
             return {
                 ...state,
                 contacts: [action.payload, ...state.contacts]

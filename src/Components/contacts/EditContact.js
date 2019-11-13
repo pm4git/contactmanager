@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import TextInputGroup from "../layout/TextInputGroup";
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux';
-import {updateContact} from '../../actions/contactActions'
+import {getContact, updateContact} from '../../actions/contactActions'
 
 
 class EditContact extends Component {
@@ -14,32 +14,27 @@ class EditContact extends Component {
         errors: ""
     };
 
+
+    static getDerivedStateFromProps(props, state) {
+        if (state.id === "") {
+            const {id, name, email, phone} = props.contact;
+            if (id !== null && id !== undefined)
+                return {
+
+                    id, name, email, phone
+
+                };
+            else
+                return null;
+        } else {
+            return null;
+        }
+    }
+
     async componentDidMount() {
-        const {id} = this.props.match.params;
-        const contact = this.props.contacts.filter((c) => c.id === id).pop();
-        this.setState(
-            {
-                id: contact.id,
-                name: contact.name,
-                email: contact.email,
-                phone: contact.phone
-            });
+        let id = this.props.match.params.id;
+        this.props.getContact(id);
 
-        /*
-                try {
-                    const res = await Axios.get(`https://jsonplaceholder.typicode.com/users/${id}`);
-                    const contact = res.data;
-                    this.setState(
-                        {
-                            id: contact.id,
-                            name: contact.name,
-                            email: contact.email,
-                            phone: contact.phone
-                        });
-                } catch (e) {
-
-                }
-        */
     }
 
     onChange = (e) => {
@@ -66,13 +61,6 @@ class EditContact extends Component {
         }
 
         this.props.updateContact({id, name, email, phone});
-
-        /*try {
-            await Axios.put(`https://jsonplaceholder.typicode.com/users/${id}`, {id, name, email, phone});
-        } catch (e) {
-            this.setState({errors: {general: e.message}});
-            return;
-        }*/
 
         this.clearState();
         this.props.history.push("/");
@@ -113,14 +101,15 @@ class EditContact extends Component {
 }
 
 EditContact.propTypes = {
-    contacts: PropTypes.array.isRequired,
-    updateContact: PropTypes.func.isRequired
+    contact: PropTypes.object.isRequired,
+    updateContact: PropTypes.func.isRequired,
+    getContact: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => (
     {
-        contacts: state.contact.contacts
+        contact: state.contact.contact
     }
 );
 
-export default connect(mapStateToProps, {updateContact})(EditContact);
+export default connect(mapStateToProps, {updateContact, getContact})(EditContact);

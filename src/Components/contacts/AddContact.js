@@ -40,7 +40,6 @@ class AddContact extends Component {
             phone
         };
         this.props.addContact(newContact);
-        //await Axios.post('https://jsonplaceholder.typicode.com/posts', newContact);
         this.clearState();
         this.props.history.push("/");
     };
